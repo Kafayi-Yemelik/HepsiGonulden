@@ -1,0 +1,5 @@
+database:
+  connection_string: "mongodb://localhost:27017"
+  customer:
+      dbname: "customer_db"
+    collection: "customer_details"
