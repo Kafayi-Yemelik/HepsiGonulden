@@ -1,18 +1,10 @@
 package main
 
 import (
-	"HepsiGonulden/Customer"
-	"HepsiGonulden/Customer/cmd"
-	"github.com/gofiber/fiber/v2"
+	"HepsiGonulden/cmd"
 )
 
 func main() {
-	app := fiber.New()
-	Customer.NewHandler(app)
-	cmd.Execute()
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	cmd.NewCommand().Execute()
 
-	app.Listen(":3000")
 }

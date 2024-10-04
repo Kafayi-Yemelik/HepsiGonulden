@@ -6,19 +6,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CustomerApiCommand() *cobra.Command {
+func OrderApiCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "customer",
+		Use:   "order",
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
 			Customer.NewHandler(app)
 
 			app.Get("/", func(c *fiber.Ctx) error {
-				return c.SendString("Hello, World!, Customer")
+				return c.SendString("Hello, World!, Order")
 			})
 
-			app.Listen(":3000")
+			app.Listen(":3001")
 			return nil
 		},
 	}
