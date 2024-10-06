@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"HepsiGonulden/Customer"
+	"HepsiGonulden/mongo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
+	"time"
 )
 
 func CustomerApiCommand() *cobra.Command {
@@ -12,6 +14,8 @@ func CustomerApiCommand() *cobra.Command {
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
+
+			mongo.GetMongoClient(10 * time.Second)
 
 			/*
 				1. Mongo client oluşturulması

@@ -1,7 +1,8 @@
-package pkg
+package config
+
 
 import (
-	"github.com/spf13/viper"
+"github.com/spf13/viper"
 )
 
 func Init() error {
@@ -11,3 +12,4 @@ func Init() error {
 	err := viper.ReadInConfig()   // Find and read the config file
 	return err
 }
+

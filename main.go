@@ -2,13 +2,13 @@ package main
 
 import (
 	"HepsiGonulden/cmd"
-	"HepsiGonulden/pkg"
+	"HepsiGonulden/config"
 	"fmt"
 )
 
 func main() {
 
-	err := pkg.Init()
+	err := config.Init()
 	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}

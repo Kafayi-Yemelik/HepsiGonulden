@@ -1,4 +1,4 @@
-package pkg
+package mongo
 
 import (
 	"context"
@@ -9,12 +9,17 @@ import (
 	"time"
 )
 
-func GetMongoClient(timeout time.Duration, URI string) (*mongo.Client, error) {
+
+
+func GetMongoClient(timeout time.Duration) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	connectionString := viper.GetString("database.connection_string")
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
 
+	if err != nil {
+
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +31,7 @@ func GetMongoClient(timeout time.Duration, URI string) (*mongo.Client, error) {
 	return client, nil
 }
 
-func GetMongoCollection(client *mongo.Client, dbName, colName string) (*mongo.Collection, error) {
+/*func GetMongoCollection(client *mongo.Client, dbName, colName string) (*mongo.Collection, error) {
 	col := client.Database(dbName).Collection(colName)
 	return col, nil
-}
+}*/
