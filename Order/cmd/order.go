@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"HepsiGonulden/Customer"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 )
@@ -12,7 +11,6 @@ func OrderApiCommand() *cobra.Command {
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
-			Customer.NewHandler(app)
 
 			app.Get("/", func(c *fiber.Ctx) error {
 				return c.SendString("Hello, World!, Order")

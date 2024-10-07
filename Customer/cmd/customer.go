@@ -15,7 +15,15 @@ func CustomerApiCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
 
-			mongo.GetMongoClient(10 * time.Second)
+			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
+			if err != nil {
+				return err
+			}
+			repo, err := Customer.NewRepository(mongoClient)
+			if err != nil {
+				return err
+			}
+			service := Customer.NewService(repo)
 
 			/*
 				1. Mongo client oluşturulması
@@ -24,7 +32,7 @@ func CustomerApiCommand() *cobra.Command {
 				4. Servicelerin handlera verilmesi
 				5. Customer endpointlerinin içinin yazılması
 			*/
-			Customer.NewHandler(app)
+			Customer.NewHandler(app, service)
 
 			app.Get("/", func(c *fiber.Ctx) error {
 				return c.SendString("Hello, World!, Customer")
