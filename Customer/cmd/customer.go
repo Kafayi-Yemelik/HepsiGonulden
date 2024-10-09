@@ -4,6 +4,8 @@ import (
 	"HepsiGonulden/Customer"
 	"HepsiGonulden/mongo"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/spf13/cobra"
 	"time"
 )
@@ -14,7 +16,10 @@ func CustomerApiCommand() *cobra.Command {
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
-
+			app.Use(requestid.New())
+			app.Use(logger.New(logger.Config{
+				Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}\n",
+			}))
 			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
 			if err != nil {
 				return err

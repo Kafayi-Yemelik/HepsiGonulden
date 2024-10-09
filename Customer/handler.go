@@ -14,7 +14,7 @@ type CustomerHandler struct {
 func NewHandler(f *fiber.App, service *Service) {
 	handler := &CustomerHandler{service: service}
 
-	api := f.Group("/customer")
+	api := f.Group("/customers")
 
 	api.Get("/:id", handler.GetByID)
 	api.Post("/", handler.Create)
