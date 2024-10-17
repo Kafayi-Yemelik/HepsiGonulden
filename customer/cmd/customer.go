@@ -10,12 +10,25 @@ import (
 	"time"
 )
 
+type GlobalErrorHandlerResp struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
 func CustomerApiCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "customer",
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			app := fiber.New()
+			app := fiber.New(fiber.Config{
+				// Global custom error handler
+				ErrorHandler: func(c *fiber.Ctx, err error) error {
+					return c.Status(fiber.StatusBadRequest).JSON(GlobalErrorHandlerResp{
+						Success: false,
+						Message: err.Error(),
+					})
+				},
+			})
 			app.Use(requestid.New())
 			app.Use(logger.New(logger.Config{
 				Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}\n",

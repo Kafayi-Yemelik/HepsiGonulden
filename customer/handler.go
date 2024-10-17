@@ -2,9 +2,9 @@ package customer
 
 import (
 	"HepsiGonulden/customer/types"
+	"HepsiGonulden/validation"
 	"context"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 type CustomerHandler struct {
@@ -26,12 +26,14 @@ func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	var customerRequestModel types.CustomerRequestModel
 
 	if err := c.BodyParser(&customerRequestModel); err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
-
+	if err := validation.Validate(customerRequestModel); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
 	customerID, err := h.service.Create(c.Context(), customerRequestModel)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(customerID)
@@ -43,7 +45,7 @@ func (h *CustomerHandler) GetByID(c *fiber.Ctx) error {
 
 	customer, err := h.service.GetByID(context.Background(), id)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	customerResponse := types.ToCustomerResponse(customer)
@@ -58,11 +60,11 @@ func (h *CustomerHandler) Update(c *fiber.Ctx) error {
 	var customer types.CustomerUpdateModel
 
 	if err := c.BodyParser(&customer); err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	if err := h.service.Update(c.Context(), id, customer); err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(customer)
@@ -73,7 +75,7 @@ func (h *CustomerHandler) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	if err := h.service.Delete(c.Context(), id); err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{

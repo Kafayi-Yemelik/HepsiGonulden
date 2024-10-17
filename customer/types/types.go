@@ -5,10 +5,10 @@ import (
 )
 
 type CustomerRequestModel struct {
-	FirstName    string        `bson:"first_name" json:"first_name" validate:"required"`
-	LastName     string        `bson:"last_name" json:"last_name" validate:"required"`
-	Age          int           `bson:"age" json:"age" `
-	Email        string        `bson:"email" json:"email"`
+	FirstName    string        `bson:"first_name" json:"first_name" validate:"required,min=2,max=18"`
+	LastName     string        `bson:"last_name" json:"last_name" validate:"required,min=2,max=20"`
+	Age          int           `bson:"age" json:"age" validate:"required,min=18,max=75"`
+	Email        string        `bson:"email" json:"email" validate:"required,email"`
 	Username     string        `bson:"username" json:"username" validate:"required"`
 	Password     string        `bson:"password" json:"password" validate:"required"`
 	CreatedAt    time.Time     `bson:"created_at" json:"created_at"`
