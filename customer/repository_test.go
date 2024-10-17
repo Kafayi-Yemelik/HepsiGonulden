@@ -1,8 +1,8 @@
-package Customer
+package customer
 
 import (
-	"HepsiGonulden/Customer/types"
 	"HepsiGonulden/config"
+	"HepsiGonulden/customer/types"
 	"context"
 	"os"
 	"path"

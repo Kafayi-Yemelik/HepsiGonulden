@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"HepsiGonulden/Customer"
+	"HepsiGonulden/customer"
 	"HepsiGonulden/mongo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -24,23 +24,23 @@ func CustomerApiCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			repo, err := Customer.NewRepository(mongoClient)
+			repo, err := customer.NewRepository(mongoClient)
 			if err != nil {
 				return err
 			}
-			service := Customer.NewService(repo)
+			service := customer.NewService(repo)
 
 			/*
 				1. Mongo client oluşturulması
 				2. Repository oluşturulması
 				3. Service oluşturulması
 				4. Servicelerin handlera verilmesi
-				5. Customer endpointlerinin içinin yazılması
+				5. customer endpointlerinin içinin yazılması
 			*/
-			Customer.NewHandler(app, service)
+			customer.NewHandler(app, service)
 
 			app.Get("/", func(c *fiber.Ctx) error {
-				return c.SendString("Hello, World!, Customer")
+				return c.SendString("Hello, World!, customer")
 			})
 
 			app.Listen(":3000")

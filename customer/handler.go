@@ -1,7 +1,7 @@
-package Customer
+package customer
 
 import (
-	"HepsiGonulden/Customer/types"
+	"HepsiGonulden/customer/types"
 	"context"
 	"github.com/gofiber/fiber/v2"
 	"net/http"

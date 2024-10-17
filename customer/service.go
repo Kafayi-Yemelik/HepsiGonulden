@@ -1,7 +1,7 @@
-package Customer
+package customer
 
 import (
-	"HepsiGonulden/Customer/types"
+	"HepsiGonulden/customer/types"
 	"context"
 	"github.com/google/uuid"
 	"time"
@@ -67,4 +67,9 @@ func (s *Service) Update(ctx context.Context, id string, customerUpdateModel typ
 func (s *Service) Delete(ctx context.Context, id string) error {
 
 	return s.repo.Delete(ctx, id)
+}
+
+func (s *Service) GetByEmail(ctx context.Context, email string) (*types.Customer, error) {
+	customer, err := s.repo.FindByEmail(ctx, email)
+	return customer, err
 }

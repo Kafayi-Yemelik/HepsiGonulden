@@ -13,7 +13,7 @@ func OrderApiCommand() *cobra.Command {
 			app := fiber.New()
 
 			app.Get("/", func(c *fiber.Ctx) error {
-				return c.SendString("Hello, World!, Order")
+				return c.SendString("Hello, World!, order")
 			})
 
 			app.Listen(":3001")

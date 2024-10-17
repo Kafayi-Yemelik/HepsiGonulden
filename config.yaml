@@ -1,5 +1,8 @@
 database:
   connection_string: "mongodb://localhost:8888"
   customer:
-    dbName: "customer_db"
+    dbName: "hepsigonulden_db"
     collectionName: "customer_details"
+  user:
+    dbName: "hepsigonulden_db"
+    collectionName: "users"
