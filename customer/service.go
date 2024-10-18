@@ -38,6 +38,7 @@ func (s *Service) Create(ctx context.Context, customerRequestModel types.Custome
 		CreatedAt: now,
 		Id:        customID,
 		Username:  customerRequestModel.Username,
+		Password:  customerRequestModel.Password,
 	}
 
 	_, err := s.repo.Create(ctx, customer)
@@ -58,8 +59,6 @@ func (s *Service) Update(ctx context.Context, id string, customerUpdateModel typ
 
 	customer.FirstName = customerUpdateModel.FirstName
 	customer.LastName = customerUpdateModel.LastName
-	customer.ContactOption = customerUpdateModel.ContactOption
-	customer.MembershipType = customerUpdateModel.MembershipType
 	customer.UpdatedAt = now
 	return s.repo.Update(ctx, id, customer)
 }
