@@ -24,13 +24,19 @@ func NewHandler(f *fiber.App, service *Service) {
 
 func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	var customerRequestModel types.CustomerRequestModel
-
 	if err := c.BodyParser(&customerRequestModel); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
-	if err := validation.Validate(customerRequestModel); err != nil {
+	} else if err := validation.Validate(customerRequestModel); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
+
+	customer, err := h.service.GetByEmail(context.Background(), customerRequestModel.Email)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	} else if customer != nil {
+		return fiber.NewError(fiber.StatusConflict, "customer with this email already exists")
+	}
+
 	customerID, err := h.service.Create(c.Context(), customerRequestModel)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -61,6 +67,8 @@ func (h *CustomerHandler) Update(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&customer); err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	} else if err := validation.Validate(customer); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	if err := h.service.Update(c.Context(), id, customer); err != nil {

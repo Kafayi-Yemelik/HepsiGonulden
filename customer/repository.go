@@ -42,9 +42,9 @@ func (r *Repository) FindByEmail(ctx context.Context, email string) (*types.Cust
 	err := r.collection.FindOne(ctx, filter).Decode(&customer)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, fmt.Errorf("no customer found with email %s", email)
-
+			return nil, nil
 		}
+		return nil, err
 	}
 	return customer, nil
 }

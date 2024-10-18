@@ -11,7 +11,6 @@ type CustomerRequestModel struct {
 	Email        string        `bson:"email" json:"email" validate:"required,email"`
 	Username     string        `bson:"username" json:"username" validate:"required"`
 	Password     string        `bson:"password" json:"password" validate:"required"`
-	CreatedAt    time.Time     `bson:"created_at" json:"created_at"`
 	Addresses    []Address     `bson:"addresses" json:"addresses"`
 	PhoneNumbers []PhoneNumber `bson:"phone_numbers" json:"phone_numbers"`
 }
@@ -48,12 +47,13 @@ type CustomerResponseModel struct {
 	Token          string            `bson:"token" json:"token"`
 	Addresses      []Address         `bson:"addresses" json:"addresses"`
 	PhoneNumber    []PhoneNumber     `bson:"phone_numbers" json:"phone_numbers"`
+	CreatedAt      time.Time         `bson:"created_at" json:"created_at"`
 }
 
 type CustomerUpdateModel struct {
-	FirstName      string            `bson:"first_name" json:"first_name"`
-	LastName       string            `bson:"last_name" json:"last_name"`
-	Age            int               `bson:"age" json:"age"`
+	FirstName      string            `bson:"first_name" json:"first_name" validate:"required,min=2,max=18"`
+	LastName       string            `bson:"last_name" json:"last_name" validate:"required,min=2,max=20"`
+	Age            int               `bson:"age" json:"age" validate:"required,min=18,max=75"`
 	Phone          string            `bson:"phone" json:"phone"`
 	Address        string            `bson:"address" json:"address"`
 	City           string            `bson:"city" json:"city"`
@@ -80,5 +80,6 @@ func ToCustomerResponse(customer *Customer) *CustomerResponseModel {
 		AdditionalInfo: customer.AdditionalInfo,
 		ContactOption:  customer.ContactOption,
 		Addresses:      customer.Addresses,
+		CreatedAt:      customer.CreatedAt,
 	}
 }

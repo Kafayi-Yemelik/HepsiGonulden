@@ -23,6 +23,14 @@ func CustomerApiCommand() *cobra.Command {
 			app := fiber.New(fiber.Config{
 				// Global custom error handler
 				ErrorHandler: func(c *fiber.Ctx, err error) error {
+					fiberErr, ok := err.(*fiber.Error)
+					if ok {
+						return c.Status(fiberErr.Code).JSON(GlobalErrorHandlerResp{
+							Success: false,
+							Message: fiberErr.Message,
+						})
+					}
+
 					return c.Status(fiber.StatusBadRequest).JSON(GlobalErrorHandlerResp{
 						Success: false,
 						Message: err.Error(),
