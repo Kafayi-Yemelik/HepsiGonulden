@@ -5,14 +5,15 @@ import (
 )
 
 type CustomerRequestModel struct {
-	FirstName    string        `bson:"first_name" json:"first_name" validate:"required,min=2,max=18"`
-	LastName     string        `bson:"last_name" json:"last_name" validate:"required,min=2,max=20"`
-	Age          int           `bson:"age" json:"age" validate:"required,min=18,max=75"`
-	Email        string        `bson:"email" json:"email" validate:"required,email"`
-	Username     string        `bson:"username" json:"username" validate:"required"`
-	Password     string        `bson:"password" json:"password" validate:"required"`
-	Addresses    []Address     `bson:"addresses" json:"addresses"`
-	PhoneNumbers []PhoneNumber `bson:"phone_numbers" json:"phone_numbers"`
+	FirstName     string        `bson:"first_name" json:"first_name" validate:"required,min=2,max=18"`
+	LastName      string        `bson:"last_name" json:"last_name" validate:"required,min=2,max=20"`
+	Age           int           `bson:"age" json:"age" validate:"required,min=18,max=75"`
+	Email         string        `bson:"email" json:"email" validate:"required,email"`
+	Username      string        `bson:"username" json:"username" validate:"required"`
+	Password      string        `bson:"password" json:"password" validate:"required"`
+	Addresses     []Address     `bson:"addresses" json:"addresses"`
+	PhoneNumbers  []PhoneNumber `bson:"phone_numbers" json:"phone_numbers"`
+	CreatorUserId string        `bson:"creator_user_id" json:"creator_user_id"`
 }
 
 type Address struct {

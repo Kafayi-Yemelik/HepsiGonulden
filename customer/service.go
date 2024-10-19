@@ -31,14 +31,15 @@ func (s *Service) Create(ctx context.Context, customerRequestModel types.Custome
 	now := time.Now().Local()
 
 	customer := &types.Customer{
-		FirstName: customerRequestModel.FirstName,
-		LastName:  customerRequestModel.LastName,
-		Age:       customerRequestModel.Age,
-		Email:     customerRequestModel.Email,
-		CreatedAt: now,
-		Id:        customID,
-		Username:  customerRequestModel.Username,
-		Password:  customerRequestModel.Password,
+		FirstName:     customerRequestModel.FirstName,
+		LastName:      customerRequestModel.LastName,
+		Age:           customerRequestModel.Age,
+		Email:         customerRequestModel.Email,
+		CreatedAt:     now,
+		Id:            customID,
+		Username:      customerRequestModel.Username,
+		Password:      customerRequestModel.Password,
+		CreatorUserId: customerRequestModel.CreatorUserId,
 	}
 
 	_, err := s.repo.Create(ctx, customer)

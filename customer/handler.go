@@ -5,6 +5,7 @@ import (
 	"HepsiGonulden/validation"
 	"context"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type CustomerHandler struct {
@@ -36,6 +37,10 @@ func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	} else if customer != nil {
 		return fiber.NewError(fiber.StatusConflict, "customer with this email already exists")
 	}
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	creatorUserId := claims["Id"].(string)
+	customerRequestModel.CreatorUserId = creatorUserId
 
 	customerID, err := h.service.Create(c.Context(), customerRequestModel)
 	if err != nil {

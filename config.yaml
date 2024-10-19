@@ -3,6 +3,3 @@ database:
   customer:
     dbName: "hepsigonulden_db"
     collectionName: "customer_details"
-  user:
-    dbName: "hepsigonulden_db"
-    collectionName: "users"

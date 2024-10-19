@@ -14,15 +14,19 @@ func AuthApiCommand() *cobra.Command {
 		Use: "auth",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New()
+
 			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
 			if err != nil {
 				return err
 			}
+
 			repo, err := customer.NewRepository(mongoClient)
 			if err != nil {
 				return err
 			}
+
 			service := customer.NewService(repo)
+
 			auth.NewHandler(app, service)
 
 			app.Listen(":3002")
