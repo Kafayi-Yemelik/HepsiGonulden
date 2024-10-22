@@ -6,6 +6,7 @@ import (
 )
 
 func JwtGenerator(id string, firstname string, lastname string) (string, error) {
+
 	claims := jwt.MapClaims{
 		"Id":        id,
 		"FirstName": firstname,

@@ -22,6 +22,20 @@ func NewHandler(f *fiber.App, service *Service) {
 	api.Put("/:id", handler.Update)
 	api.Delete("/:id", handler.Delete)
 }
+func (h *CustomerHandler) GetByID(c *fiber.Ctx) error {
+
+	id := c.Params("id")
+
+	customer, err := h.service.GetByID(context.Background(), id)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	customerResponse := types.ToCustomerResponse(customer)
+
+	return c.Status(fiber.StatusOK).JSON(customerResponse)
+
+}
 
 func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	var customerRequestModel types.CustomerRequestModel
@@ -48,21 +62,6 @@ func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(customerID)
-}
-
-func (h *CustomerHandler) GetByID(c *fiber.Ctx) error {
-
-	id := c.Params("id")
-
-	customer, err := h.service.GetByID(context.Background(), id)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
-
-	customerResponse := types.ToCustomerResponse(customer)
-
-	return c.Status(fiber.StatusOK).JSON(customerResponse)
-
 }
 
 func (h *CustomerHandler) Update(c *fiber.Ctx) error {
