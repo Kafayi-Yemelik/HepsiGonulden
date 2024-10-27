@@ -28,7 +28,7 @@ func (s *Service) GetByID(ctx context.Context, id string) (*types.Customer, erro
 
 func (s *Service) Create(ctx context.Context, customerRequestModel types.CustomerRequestModel) (string, error) {
 	customID := uuid.New().String()
-	now := time.Now().Local()
+	now := time.Now().UTC()
 
 	customer := &types.Customer{
 		FirstName:     customerRequestModel.FirstName,

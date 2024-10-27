@@ -1,0 +1,25 @@
+FROM golang:1.22
+
+WORKDIR /app
+
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+COPY main.go .
+COPY customer/ ./customer/
+COPY order/ ./order/
+COPY cmd/ ./cmd/
+COPY auth/ ./auth/
+COPY authentication/ ./authentication/
+COPY config/ ./config/
+COPY config.yaml /
+COPY mongo/ ./mongo/
+COPY validation/ ./validation/
+
+RUN go build -o /HepsiGonulden
+
+WORKDIR /
+EXPOSE 3000
+
+CMD ["customer"]

@@ -32,11 +32,11 @@ func (s *Service) CreateOrder(ctx context.Context, orderRequestModel *types.Orde
 
 	now := time.Now().Local()
 	order := &types.Order{
-		Id:         uuid.New().String(),
-		CustomerId: orderRequestModel.CustomerId,
-		OrderName:  orderRequestModel.OrderName,
-		OrderTotal: orderRequestModel.OrderTotal,
-		CreatedAt:  now,
+		Id:            uuid.New().String(),
+		OrderName:     orderRequestModel.OrderName,
+		OrderTotal:    orderRequestModel.OrderTotal,
+		CreatorUserId: orderRequestModel.CreatorUserId,
+		CreatedAt:     now,
 	}
 	_, err := s.repo.OrderCreate(ctx, order)
 	if err != nil {

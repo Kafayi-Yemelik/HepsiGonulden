@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-
-
 func GetMongoClient(timeout time.Duration) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -30,8 +28,3 @@ func GetMongoClient(timeout time.Duration) (*mongo.Client, error) {
 	}
 	return client, nil
 }
-
-/*func GetMongoCollection(client *mongo.Client, dbName, colName string) (*mongo.Collection, error) {
-	col := client.Database(dbName).Collection(colName)
-	return col, nil
-}*/

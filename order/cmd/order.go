@@ -4,6 +4,7 @@ import (
 	"HepsiGonulden/mongo"
 	"HepsiGonulden/order"
 	jwtware "github.com/gofiber/contrib/jwt"
+	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
@@ -38,6 +39,23 @@ func OrderApiCommand() *cobra.Command {
 					})
 				},
 			})
+
+			app.Use(requestid.New())
+			app.Use(logger.New(logger.Config{
+				Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}\n",
+			}))
+			cfg := swagger.Config{
+				BasePath: "/",
+				FilePath: "./order/docs/swagger.json",
+				Path:     "swagger",
+				Title:    "Swagger API Docs",
+			}
+
+			app.Use(swagger.New(cfg))
+
+			app.Use(jwtware.New(jwtware.Config{
+				SigningKey: jwtware.SigningKey{Key: []byte("secret")},
+			}))
 			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
 			if err != nil {
 				return err
@@ -48,17 +66,7 @@ func OrderApiCommand() *cobra.Command {
 			}
 			service := order.NewService(repo)
 
-			// ToDo Gönül : Buradaki problemi Umut'q anlatacğım
 			order.NewHandler(app, service)
-			app.Use(requestid.New())
-			app.Use(logger.New(logger.Config{
-				Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}\n",
-			}))
-
-			app.Use(jwtware.New(jwtware.Config{
-				SigningKey: jwtware.SigningKey{Key: []byte("secret")},
-			}))
-
 			app.Get("/", func(c *fiber.Ctx) error {
 				return c.SendString("Hello, World!, order")
 			})

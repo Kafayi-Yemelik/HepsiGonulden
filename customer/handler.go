@@ -12,6 +12,21 @@ type CustomerHandler struct {
 	service *Service
 }
 
+// @title Customer Service API
+// @version 1.0
+// @description This is the Customer Service API for handling CRUD operations related to customer
+// @termsOfService http://swagger.io/terms/
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:3000
+// @BasePath /
+// @schemes http
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
 func NewHandler(f *fiber.App, service *Service) {
 	handler := &CustomerHandler{service: service}
 
@@ -22,6 +37,19 @@ func NewHandler(f *fiber.App, service *Service) {
 	api.Put("/:id", handler.Update)
 	api.Delete("/:id", handler.Delete)
 }
+
+// GetByID retrieves an customer by its ID.
+// @Summary Get customer by ID
+// @Description Get customer details by ID
+// @Tags customer
+// @Produce  json
+// @Param id path string true "Customer ID"
+// @Param  Authorization header string true "JWT token"
+// @Success 200 {object} types.CustomerResponseModel
+// @Failure 400 {object} string
+// @Failure 404 {object} string
+// @Failure 500 {object} string
+// @Router /customers/{id} [get]
 func (h *CustomerHandler) GetByID(c *fiber.Ctx) error {
 
 	id := c.Params("id")

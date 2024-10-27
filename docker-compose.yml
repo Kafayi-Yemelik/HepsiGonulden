@@ -1,13 +1,33 @@
-version: '4.34.2'
 
 services:
+
   # MongoDB Servisi
   mongo:
     image: mongo
-
     restart: always
     ports:
-      - "8888:27017"
+      - "27017:27017"
+    networks:
+      - backend
     volumes:
       - ./mongodb:/data/db
 
+  # Customer Servisi
+  customer:
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile-customer
+    image: hepsigonulden-customer
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    networks:
+      - backend
+    command: [ "/HepsiGonulden", "customer" ]
+    ports:
+      - "3000:3000"
+
+networks:
+  backend:
+    driver: bridge

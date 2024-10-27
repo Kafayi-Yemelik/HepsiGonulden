@@ -9,7 +9,7 @@ import (
 func main() {
 
 	err := config.Init()
-	if err != nil { // Handle errors reading the config file
+	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 

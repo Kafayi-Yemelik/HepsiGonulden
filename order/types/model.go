@@ -4,10 +4,9 @@ import "time"
 
 type Order struct {
 	Id            string    `bson:"_id" json:"id"`
-	CustomerId    string    `bson:"customer_id" json:"customer_id"`
 	OrderName     string    `bson:"order_name" json:"order_name"`
 	CreatorUserId string    `bson:"creator_user_id" json:"creator_user_id"`
-	PaymentMethod string    `bson:"payment_method" json:"payment_method"`
+	PaymentMethod string    `bson:"payment_method,omitempty" json:"payment_method"`
 	OrderTotal    int       `bson:"order_total" json:"order_total"`
 	CreatedAt     time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt     time.Time `bson:"updated_at" json:"updated_at"`

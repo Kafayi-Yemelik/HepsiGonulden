@@ -4,6 +4,7 @@ import (
 	"HepsiGonulden/customer"
 	"HepsiGonulden/mongo"
 	jwtware "github.com/gofiber/contrib/jwt"
+	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
@@ -44,6 +45,15 @@ func CustomerApiCommand() *cobra.Command {
 				Format: "${pid} ${locals:requestid} ${status} - ${method} ${path}\n",
 			}))
 
+			cfg := swagger.Config{
+				BasePath: "/",
+				FilePath: "./customer/docs/swagger.json",
+				Path:     "swagger",
+				Title:    "Swagger API Docs",
+			}
+
+			app.Use(swagger.New(cfg))
+
 			app.Use(jwtware.New(jwtware.Config{
 				SigningKey: jwtware.SigningKey{Key: []byte("secret")},
 			}))
@@ -57,16 +67,10 @@ func CustomerApiCommand() *cobra.Command {
 			}
 			service := customer.NewService(repo)
 
-			/*
-				1. Mongo client oluşturulması
-				2. Repository oluşturulması
-				3. Service oluşturulması
-				4. Servicelerin handlera verilmesi
-				5. customer endpointlerinin içinin yazılması
-			*/
 			customer.NewHandler(app, service)
 
 			app.Get("/", func(c *fiber.Ctx) error {
+
 				return c.SendString("Hello, World!, customer")
 			})
 

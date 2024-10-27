@@ -15,5 +15,6 @@ func NewCommand() *cobra.Command {
 	rootCmd.AddCommand(customerCmd.CustomerApiCommand())
 	rootCmd.AddCommand(orderCmd.OrderApiCommand())
 	rootCmd.AddCommand(authCmd.AuthApiCommand())
+
 	return rootCmd
 }
