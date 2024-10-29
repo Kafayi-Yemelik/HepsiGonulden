@@ -49,7 +49,7 @@ func (s *Service) CreateOrder(ctx context.Context, orderRequestModel *types.Orde
 func (s *Service) Update(ctx context.Context, id string, orderUpdateModel types.OrderUpdateModel) error {
 
 	order, err := s.GetById(ctx, id)
-	now := time.Now().Local()
+	now := time.Now().UTC()
 	if err != nil {
 		return err
 	}

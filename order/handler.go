@@ -61,6 +61,18 @@ func (h *OrderHandler) GetByID(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(orderResponse)
 }
 
+// OrderCreate creates a new order.
+// @Summary Create a new order
+// @Description Create a new order
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Param order body types.OrderRequestModel true "Order data"
+// @Param Authorization header string true "JWT token"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /orders [post]
 func (h *OrderHandler) OrderCreate(c *fiber.Ctx) error {
 
 	var orderRequestModel types.OrderRequestModel
@@ -84,6 +96,20 @@ func (h *OrderHandler) OrderCreate(c *fiber.Ctx) error {
 	})
 
 }
+
+// Update modifies an existing order's details.
+// @Summary Update order details
+// @Description Update order details with the given data
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Order ID"
+// @Param Authorization header string true "JWT token"
+// @Param order body types.OrderUpdateModel true "Order data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /orders/{id} [put]
 func (h *OrderHandler) Update(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -103,6 +129,16 @@ func (h *OrderHandler) Update(c *fiber.Ctx) error {
 
 }
 
+// Delete removes an order from the database.
+// @Summary Delete order
+// @Description Delete an order by its ID
+// @Tags order
+// @Produce  json
+// @Param Authorization header string true "JWT token"
+// @Param id path string true "Order ID"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} string
+// @Router /orders/{id} [delete]
 func (h *OrderHandler) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
 

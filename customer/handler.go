@@ -65,6 +65,18 @@ func (h *CustomerHandler) GetByID(c *fiber.Ctx) error {
 
 }
 
+// Create creates a new customer
+// @Summary Create a new customer
+// @Description Create a new customer for a specific customer
+// @Tags customer
+// @Accept  json
+// @Produce  json
+// @Param Authorization header string true "JWT token"
+// @Param customer body types.CustomerRequestModel true "Customer data"
+// @Success 201 {object} types.CustomerRequestModel
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /customers [post]
 func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	var customerRequestModel types.CustomerRequestModel
 	if err := c.BodyParser(&customerRequestModel); err != nil {
@@ -92,6 +104,19 @@ func (h *CustomerHandler) Create(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(customerID)
 }
 
+// Update modifies an existing customer by its ID
+// @Summary Update customer details
+// @Description Update customer details by ID
+// @Tags customer
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Customer ID"
+// @Param Authorization header string true "JWT token"
+// @Param customer body types.CustomerUpdateModel true "Customer data"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /customers/{id} [put]
 func (h *CustomerHandler) Update(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -110,6 +135,17 @@ func (h *CustomerHandler) Update(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(customer)
 
 }
+
+// Delete removes an customer from the database.
+// @Summary Delete customer
+// @Description Delete an customer by its ID
+// @Tags customer
+// @Produce  json
+// @Param Authorization header string true "JWT token"
+// @Param id path string true "Customer ID"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} string
+// @Router /customer/{id} [delete]
 
 func (h *CustomerHandler) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")

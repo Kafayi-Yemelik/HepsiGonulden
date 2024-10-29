@@ -1,8 +1,17 @@
 database:
-  connection_string:  "mongodb://localhost:27017"
+  connection_string: "mongodb://localhost:27027"
   customer:
     dbName: "hepsigonulden_db"
     collectionName: "customer_details"
   order:
     dbName: "hepsigonulden_db"
     collectionName: "order_details"
+
+
+kafka:
+  brokers:
+    - "localhost:9092"
+  topic: "order_create"
+  consumer_group_name: "prepare_order_consumer_group"
+
+

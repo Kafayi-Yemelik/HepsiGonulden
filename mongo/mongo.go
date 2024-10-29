@@ -14,10 +14,6 @@ func GetMongoClient(timeout time.Duration) (*mongo.Client, error) {
 	defer cancel()
 	connectionString := viper.GetString("database.connection_string")
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
-
-	if err != nil {
-
-	}
 	if err != nil {
 		return nil, err
 	}
