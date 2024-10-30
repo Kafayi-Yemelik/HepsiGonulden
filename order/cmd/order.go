@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"HepsiGonulden/kafka"
 	"HepsiGonulden/mongo"
 	"HepsiGonulden/order"
 	jwtware "github.com/gofiber/contrib/jwt"
@@ -52,7 +53,6 @@ func OrderApiCommand() *cobra.Command {
 			}
 
 			app.Use(swagger.New(cfg))
-
 			app.Use(jwtware.New(jwtware.Config{
 				SigningKey: jwtware.SigningKey{Key: []byte("secret")},
 			}))
@@ -64,7 +64,9 @@ func OrderApiCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			service := order.NewService(repo)
+
+			producer := kafka.NewProducer()
+			service := order.NewService(repo, producer)
 
 			order.NewHandler(app, service)
 			app.Get("/", func(c *fiber.Ctx) error {

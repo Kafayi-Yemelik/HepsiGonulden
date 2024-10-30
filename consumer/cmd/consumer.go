@@ -30,7 +30,6 @@ func ConsumerOrderCommand() *cobra.Command {
 			brokers := viper.GetStringSlice("kafka.brokers")
 			topic := viper.GetString("kafka.topic")
 			consumerGroupName := viper.GetString("kafka.consumer_group_name")
-
 			keepRunning := true
 			log.Println("Starting a new Sarama consumer")
 			sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
