@@ -1,8 +1,13 @@
 package cmd
 
 import (
+	"HepsiGonulden/mongo"
+	"HepsiGonulden/order"
+	"HepsiGonulden/order/types"
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/IBM/sarama"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -11,10 +16,12 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 )
 
 type Consumer struct {
-	ready chan bool
+	ready        chan bool
+	orderService *order.Service
 }
 
 type GlobalErrorHandlerResp struct {
@@ -39,13 +46,23 @@ func ConsumerOrderCommand() *cobra.Command {
 				log.Panicf("Error parsing Kafka version: %v", err)
 			}
 
+			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
+			if err != nil {
+				return err
+			}
+			repo, err := order.NewRepository(mongoClient)
+			if err != nil {
+				return err
+			}
+
+			consumer := Consumer{
+				ready:        make(chan bool),
+				orderService: order.NewService(repo, nil),
+			}
+
 			config := sarama.NewConfig()
 			config.Version = version
 			config.Consumer.Offsets.Initial = sarama.OffsetOldest
-
-			consumer := Consumer{
-				ready: make(chan bool),
-			}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			client, err := sarama.NewConsumerGroup(brokers, consumerGroupName, config)
@@ -117,6 +134,25 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 				return nil
 			}
 			log.Printf("Message claimed: value = %s, timestamp = %v, topic = %s", string(message.Value), message.Timestamp, message.Topic)
+
+			var currentOrder types.Order
+			err := json.Unmarshal(message.Value, &currentOrder)
+			if err != nil {
+				fmt.Println("Error:", err)
+				continue
+			}
+
+			err = consumer.orderService.Update(context.Background(), currentOrder.Id, types.OrderUpdateModel{
+				OrderName:     currentOrder.OrderName,
+				OrderTotal:    currentOrder.OrderTotal,
+				PaymentMethod: currentOrder.PaymentMethod,
+				OrderStatus:   "Ready",
+			})
+			if err != nil {
+				fmt.Printf("order update operation failed, err: %s", err.Error())
+				continue
+			}
+
 			session.MarkMessage(message, "")
 		case <-session.Context().Done():
 			return nil

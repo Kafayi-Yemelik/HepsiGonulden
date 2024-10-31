@@ -37,6 +37,8 @@ func (s *Service) CreateOrder(ctx context.Context, orderRequestModel *types.Orde
 		OrderTotal:    orderRequestModel.OrderTotal,
 		CreatorUserId: orderRequestModel.CreatorUserId,
 		CreatedAt:     now,
+		PaymentMethod: "Credit Card",
+		OrderStatus:   "Getting Ready",
 	}
 	_, err := s.repo.OrderCreate(ctx, order)
 	if err != nil {
@@ -53,14 +55,15 @@ func (s *Service) CreateOrder(ctx context.Context, orderRequestModel *types.Orde
 
 func (s *Service) Update(ctx context.Context, id string, orderUpdateModel types.OrderUpdateModel) error {
 	order, err := s.GetById(ctx, id)
-	now := time.Now().UTC()
 	if err != nil {
 		return err
 	}
 
 	order.OrderName = orderUpdateModel.OrderName
 	order.OrderTotal = orderUpdateModel.OrderTotal
-	order.UpdatedAt = now
+	order.PaymentMethod = orderUpdateModel.PaymentMethod
+	order.OrderStatus = orderUpdateModel.OrderStatus
+	order.UpdatedAt = time.Now().UTC()
 	return s.repo.OrderUpdate(ctx, id, order)
 }
 

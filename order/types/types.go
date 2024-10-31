@@ -17,14 +17,12 @@ type OrderResponseModel struct {
 	OrderTotal    int       `bson:"order_total" json:"order_total"`
 	CreatorUserId string    `bson:"creator_user_id" json:"creator_user_id"`
 	CreatedAt     time.Time `bson:"created_at" json:"created_at"`
-	UpdatedAt     time.Time `bson:"updated_at" json:"updated_at"`
 }
 type OrderUpdateModel struct {
-	OrderName      string    `bson:"order_name" json:"order_name"`
-	OrderTotal     int       `bson:"order_total" json:"order_total"`
-	ShipmentStatus string    `bson:"shipment_status" json:"shipment_status"`
-	PaymentMethod  string    `bson:"payment_method" json:"payment_method"`
-	UpdatedAt      time.Time `bson:"updated_at" json:"updated_at"`
+	OrderName     string `bson:"order_name" json:"order_name"`
+	OrderTotal    int    `bson:"order_total" json:"order_total"`
+	OrderStatus   string `bson:"order_status" json:"order_status"`
+	PaymentMethod string `bson:"payment_method" json:"payment_method"`
 }
 
 type CustomerResponse struct {
@@ -40,6 +38,5 @@ func ToOrderResponse(order *Order) *OrderResponseModel {
 		OrderTotal:    order.OrderTotal,
 		CreatorUserId: order.CreatorUserId,
 		CreatedAt:     order.CreatedAt,
-		UpdatedAt:     order.UpdatedAt,
 	}
 }

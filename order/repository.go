@@ -42,9 +42,9 @@ func (r *Repository) OrderCreate(ctx context.Context, order *types.Order) (*mong
 	return res, nil
 }
 
-func (r *Repository) OrderUpdate(ctx context.Context, id string, customer *types.Order) error {
+func (r *Repository) OrderUpdate(ctx context.Context, id string, order *types.Order) error {
 	filter := bson.D{{"_id", id}}
-	update := bson.M{"$set": customer}
+	update := bson.M{"$set": order}
 	_, err := r.collection.UpdateOne(ctx, filter, update)
 	return err
 }
