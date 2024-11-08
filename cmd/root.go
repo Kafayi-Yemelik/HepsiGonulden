@@ -1,23 +1,19 @@
 package cmd
 
 import (
-	authCmd "HepsiGonulden/auth/cmd"
-	consumerCmd "HepsiGonulden/consumer/cmd"
-	customerCmd "HepsiGonulden/customer/cmd"
-	orderCmd "HepsiGonulden/order/cmd"
-
+	"HepsiGonulden/cmd/api"
+	"HepsiGonulden/cmd/consumer"
 	"github.com/spf13/cobra"
 )
 
 func NewCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-
 		Short: "",
 	}
-	rootCmd.AddCommand(customerCmd.CustomerApiCommand())
-	rootCmd.AddCommand(orderCmd.OrderApiCommand())
-	rootCmd.AddCommand(authCmd.AuthApiCommand())
-	rootCmd.AddCommand(consumerCmd.ConsumerOrderCommand())
-
+	rootCmd.AddCommand(api.CustomerApiCommand())
+	rootCmd.AddCommand(api.OrderApiCommand())
+	rootCmd.AddCommand(api.AuthApiCommand())
+	// rootCmd.AddCommand(api.NewApiCommand())
+	rootCmd.AddCommand(consumer.NewConsumerCommand())
 	return rootCmd
 }

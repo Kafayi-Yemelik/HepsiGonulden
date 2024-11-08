@@ -11,11 +11,11 @@ COPY customer/ ./customer/
 COPY order/ ./order/
 COPY cmd/ ./cmd/
 COPY auth/ ./auth/
-COPY authentication/ ./authentication/
+COPY pkg/authentication/ ./authentication/
 COPY config/ ./config/
 COPY config.yaml /
-COPY mongo/ ./mongo/
-COPY validation/ ./validation/
+COPY pkg/mongo/ ./mongo/
+COPY pkg/validation/ ./validation/
 
 RUN go build -o /HepsiGonulden
 

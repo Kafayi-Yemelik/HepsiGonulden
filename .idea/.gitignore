@@ -1,8 +1,8 @@
 # Default ignored files
-/shelf/
-/workspace.xml
+/../../HepsiGonulden./.idea/shelf/
+/../../HepsiGonulden./.idea/workspace.xml
 # Editor-based HTTP Client requests
-/httpRequests/
+/../../HepsiGonulden./.idea/httpRequests/
 # Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+/../../HepsiGonulden./.idea/dataSources/
+/../../HepsiGonulden./.idea/dataSources.local.xml

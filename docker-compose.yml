@@ -12,6 +12,7 @@ services:
     volumes:
       - ./mongodb:/data/db
 
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -75,22 +76,6 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-
-  # Customer Servisi
-  # customer:
-  #build:
-    #  context: .
-    #  dockerfile: Dockerfile-customer
-    #  image: hepsigonulden-customer
-      #  depends_on:
-    #   - mongo
-      #links:
-      #- mongo
-      #networks:
-      #- backend
-    #command: [ "/HepsiGonulden", "customer" ]
-      #ports:
-      #- "3000:3000"
 
 networks:
   backend:
