@@ -14,7 +14,6 @@ func JwtGenerator(id string, firstname string, lastname string) (string, error) 
 		"exp":       time.Now().Add(time.Hour * 72).Unix(),
 	}
 
-	// Create token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString([]byte("secret"))
 

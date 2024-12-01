@@ -1,10 +1,8 @@
 package consumer
 
 import (
-	"HepsiGonulden/internal/repository"
-	"HepsiGonulden/internal/services"
+	client2 "HepsiGonulden/client"
 	"HepsiGonulden/internal/types"
-	"HepsiGonulden/pkg/mongo"
 	"context"
 	"encoding/json"
 	"errors"
@@ -17,12 +15,11 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
-	"time"
 )
 
 type OrderCreateConsumer struct {
-	ready        chan bool
-	orderService *services.OrderService
+	ready       chan bool
+	orderClient *client2.HttpOrderClient
 }
 
 func NewOrderCreateConsumerCommand() *cobra.Command {
@@ -42,18 +39,9 @@ func NewOrderCreateConsumerCommand() *cobra.Command {
 				log.Panicf("Error parsing Kafka version: %v", err)
 			}
 
-			mongoClient, err := mongo.GetMongoClient(10 * time.Second)
-			if err != nil {
-				return err
-			}
-			repo, err := repository.NewOrderRepository(mongoClient)
-			if err != nil {
-				return err
-			}
-
 			consumer := OrderCreateConsumer{
-				ready:        make(chan bool),
-				orderService: services.NewOrderService(repo, nil),
+				ready:       make(chan bool),
+				orderClient: client2.NewHttpOrderClient("http://localhost:3001"),
 			}
 
 			config := sarama.NewConfig()
@@ -138,7 +126,7 @@ func (consumer *OrderCreateConsumer) ConsumeClaim(session sarama.ConsumerGroupSe
 				continue
 			}
 
-			err = consumer.orderService.Update(context.Background(), currentOrder.Id, types.OrderUpdateModel{
+			err = consumer.orderClient.UpdateOrder(context.Background(), currentOrder.Id, types.OrderUpdateModel{
 				OrderName:     currentOrder.OrderName,
 				OrderTotal:    currentOrder.OrderTotal,
 				PaymentMethod: currentOrder.PaymentMethod,

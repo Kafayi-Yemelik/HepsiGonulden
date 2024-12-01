@@ -1,4 +1,4 @@
-package api
+package order
 
 import (
 	"HepsiGonulden/internal/handler"
@@ -18,11 +18,10 @@ import (
 
 func OrderApiCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "order",
+		Use:   "api",
 		Short: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			app := fiber.New(fiber.Config{
-				// Global custom error handler
 				ErrorHandler: func(c *fiber.Ctx, err error) error {
 					fiberErr, ok := err.(*fiber.Error)
 					if ok {

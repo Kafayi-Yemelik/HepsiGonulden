@@ -1,4 +1,4 @@
-package api
+package customer
 
 import (
 	"HepsiGonulden/internal/handler"
